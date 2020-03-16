@@ -13,9 +13,35 @@ Implement an URL shortener service
 
 1. 產生短網址 - API Service  
   1.1. 認證API :  透過帳號密碼認證後，取得Token訪問接下來的API  
-  ``http --auth demo@gmail.com:1qaz2wsx  --json POST http://python.thinkted.com.tw/api/v1/tokens/``   
-  1.2. 短網址API : 實際產生短網址的 API  
-  1.3 區分版本號為 api/v1   
+  
+  <code>http --auth demo@gmail.com:1qaz2wsx  --json POST http://python.thinkted.com.tw/api/v1/tokens/</code>
+
+HTTP/1.1 200 OK
+Connection: keep-alive
+Content-Length: 163
+Content-Type: application/json
+Date: Mon, 16 Mar 2020 23:22:26 GMT
+Server: nginx/1.16.1
+
+{
+    "expiration": 3600,
+    "token": "eyJhbGciOiJIUzI1NiIsImlhdCI6MTU4NDQwMDk0NiwiZXhwIjoxNTg0NDA0NTQ2fQ.eyJpZCI6MX0.pdliciYNcG-LxkviulOh3mNkhlf3jnLturj8WqbQ2hU"
+}
+
+<code>http --json --auth eyJhbGciOiJIUzI1NiIsImlhdCI6MTU4NDQwMDk0NiwiZXhwIjoxNTg0NDA0NTQ2fQ.eyJpZCI6MX0.pdliciYNcG-LxkviulOh3mNkhlf3jnLturj8WqbQ2hU: --json POST  http://python.thinkted.com.tw/api/v1/shorturl/ "url=http://www.google.com"</code>	
+
+HTTP/1.1 200 OK
+Connection: keep-alive
+Content-Length: 33
+Content-Type: application/json
+Date: Mon, 16 Mar 2020 23:46:00 GMT
+Server: nginx/1.16.1
+
+"http://p.thinkted.com/ed646a33"
+
+
+1.2. 短網址API : 實際產生短網址的 API  
+1.3 區分版本號為 api/v1   
 2. 使用短網址 - Web Service  
 		2.1 須注意高並發機制  
 		2.2 Server Warm Up 機制 
