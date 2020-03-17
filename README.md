@@ -68,4 +68,4 @@ Server: nginx/1.16.1
 5. 需設定好Warm Up 機制，若主機須重開機情況下，大量Request在第一次會直接訪問到DB  
 	5.1 在Nginx開機前，須將Data以Queue的方式餵入Redis  
 
- 
+ ![System](system.png)
