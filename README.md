@@ -19,6 +19,7 @@ Implement an URL shortener service
 [認證API Request]	
 
 ```http --auth demo@gmail.com:1qaz2wsx  --json POST http://python.thinkted.com.tw/api/v1/tokens```
+
 [認證Response]	
 ```
 HTTP/1.1 200 OK
