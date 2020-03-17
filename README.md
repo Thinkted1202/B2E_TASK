@@ -12,11 +12,14 @@ Implement an URL shortener service
 ### 分析需求
 
 1. 產生短網址 - API Service  
-  1.1. 認證API :  透過帳號密碼認證後，取得Token訪問接下來的API  
+	1.1. 認證API :  透過帳號密碼認證後，取得Token訪問接下來的API  
+	1.2. 短網址API : 實際產生短網址的 API  
+	1.3 區分版本號為 api/v1  
+	
+[認證API Request]	
 
-[認證Request]
 ```http --auth demo@gmail.com:1qaz2wsx  --json POST http://python.thinkted.com.tw/api/v1/tokens```
-[認證Response]
+[認證Response]	
 ```
 HTTP/1.1 200 OK
 Connection: keep-alive
@@ -30,11 +33,11 @@ Server: nginx/1.16.1
     "token": "eyJhbGciOiJIUzI1NiIsImlhdCI6MTU4NDQwMDk0NiwiZXhwIjoxNTg0NDA0NTQ2fQ.eyJpZCI6MX0.pdliciYNcG-LxkviulOh3mNkhlf3jnLturj8WqbQ2hU"
 }
 ```
-[ShortUrl Request]
+[ShortUrl API Request]	
 ```
 http --json --auth eyJhbGciOiJIUzI1NiIsImlhdCI6MTU4NDQwMDk0NiwiZXhwIjoxNTg0NDA0NTQ2fQ.eyJpZCI6MX0.pdliciYNcG-LxkviulOh3mNkhlf3jnLturj8WqbQ2hU: --json POST  http://python.thinkted.com.tw/api/v1/shorturl/ "url=http://www.google.com"
 ```
-[ShortUrl Response]
+[ShortUrl Response]	
 ```
 HTTP/1.1 200 OK
 Connection: keep-alive
@@ -44,9 +47,8 @@ Date: Mon, 16 Mar 2020 23:46:00 GMT
 Server: nginx/1.16.1
 
 "http://p.thinkted.com/ed646a33"
-```
-	1.2. 短網址API : 實際產生短網址的 API  
-	1.3 區分版本號為 api/v1   
+```	
+ 
 2. 使用短網址 - Web Service  
 		2.1 須注意高並發機制  
 		2.2 Server Warm Up 機制 
@@ -66,6 +68,4 @@ Server: nginx/1.16.1
 5. 需設定好Warm Up 機制，若主機須重開機情況下，大量Request在第一次會直接訪問到DB  
 	5.1 在Nginx開機前，須將Data以Queue的方式餵入Redis  
 
-![Alt text](https://lh3.googleusercontent.com/HuFpKFpFdjlsw_LGmk8dQGMIhF_RqJsHqgFYrhlMW_nJaYun_gyMEvLkyNOej2x-ieLvjylBR4gHbVHuDAA-FpdXrg51K8TT00aWaBTPo9fH1roKB_ggUOOy3Wg8BhaJHTe3soZJUjMIaUt5G7HiaqU3gmImuup8HwpH4YzMVFnPtMmlNfFuCItFvTJbh3Ldap0999I_jzx4c8VFL0R7OI4A_Ol9fZ5xqUKReQF9_Y41QXqE7DGP_G3SEej_QNEP4t643yshzr5cvxxbjDRXNMWuOhIqJ_rImdRkR-GcjiQxjHwabsxstMaQGH5VAUXwswghkt8Kxt0kSNUIl-uIHfjzkrnX_avX-5QYkrQtTcjQvqlu1_CDZNesIFDi3cVsYTbF8IeWLIXiK5n8liUFxMXbO2W7Bw2e4UYjGvkeE0oFK1Cp66pzPiiBLVk1-eUnSiqSemh7iOFnxBl8QKYtTgCPRhhw8viAlg2XHEgQN0x7qYS1dQsaDm0f_el2nAle-bBRFlCNWzf-sYq2xfQuvl63OzCJN2ckus-qJGB6Khk1cR6TYc2uAQZwUD_ckzFEnQdIXZ6boVcwqxDhidsC_50ut6hiXGATCDjQGdGbWGFBw7SkrSTWOJ_ah_vgBYQTawjmV3G0VQaDxDj-C_tKDrXFp0_XrkzO1RdJemfKyPSF--0LtZR6PUD4c1OWxQ=w1400-h442-no)
-
-  
+ 
