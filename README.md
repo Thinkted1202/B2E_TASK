@@ -5,7 +5,7 @@ Implement an URL shortener service
 * OS:CentOS 7
 * Code : Python Flask
 * Web Server : Gunicorn 
-* R-PROXY Server : Nginx
+* R-PROXY & LBS Server : Nginx
 * Cache Server : Redis
 * DB Server : Mysql
   
@@ -56,16 +56,14 @@ Server: nginx/1.16.1
 ### 系統初擬架構 
 
 針對 高並發機制如下
-1. CDN 做為第一層Cache，須開啟Forward機制  
-2. Nginx R-Proxy 為第二層Cache 機制，配以Nginx 驅動的 LBS，分散Request量  
-	2.1 視需求量體，可改為支援度更高的R-Proxy Server (Varnish Cluster) 
-3. 避免大量直接訪問DB，中間做第三層Redis Cache   
-  3.1 視需求量體，可以做Redis 的 Cluster 但需要注意 RedisLock 的問題。  
-4. Mysql Connection 在做高並發時會是瓶頸，使用Master/Slave機制分流。  
-	 4.1 ProxySql 可調節讀寫分流，避免程式端直接誤用Master/Slave 分流  
-	4.2 視需求量體，可以將Master Write使用Queue寫入，可以再次緩衝Mysql的Connection數  
-	4.3 視需求量體 若考慮到HA機制，可改為DRBD 或 Galera Cluster 
-5. 需設定好Warm Up 機制，若主機須重開機情況下，大量Request在第一次會直接訪問到DB  
-	5.1 在Nginx開機前，須將Data以Queue的方式餵入Redis  
+1. Nginx R-Proxy 為第一層Cache 機制，配以Nginx LBS，分散Request量  
+2. 避免大量直接訪問DB，中間做第二層Redis Cache   
+  	2.1 視需求量體，可以做Redis 的 Cluster 但需要注意 RedisLock 的問題。  
+3. Mysql Connection 在做高並發時會是瓶頸，使用Master/Slave機制分流。  
+	3.1 ProxySql 可調節讀寫分流，避免程式端直接誤用Master/Slave 分流  
+	3.2 視需求量體，可以將Master Write使用Queue寫入，可以再次緩衝Mysql的Connection數  
+	3.3 視需求量體 若考慮到HA機制，可改為DRBD 或 Galera Cluster 
+4. 需設定好Warm Up 機制，若主機須重開機情況下，大量Request在第一次會直接訪問到DB  
+	4.1 在Nginx開機前，須將Data以Queue的方式餵入Redis  
 
  ![System](system.png)
