@@ -15,9 +15,10 @@ def shorturl():
 	#產生shortkey
 	short_key = ShortUrl.gen_shortKey(url)
 	# return short_key
-	#判斷shortkey是否已經存在
-	if ShortUrl.query.filter_by(shortkey=short_key).first():
+	#判斷shortkey和url是否已經存在
+	if ShortUrl.query.filter_by(shortkey=short_key,url=url).first():
 		return jsonify(ShortUrl.gen_shortUrl(short_key))
+	#若有碰撞要另外處理
 
 	#先輸入到Redis
 	r = RedisHelper()
