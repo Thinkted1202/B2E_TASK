@@ -1,6 +1,6 @@
-from flask import request,redirect,current_app
+from flask import redirect
 from ..models.shorturl import ShortUrl
-from ..models.redis import RedisHelper
+from app.helpers.redis_helper import RedisHelper
 from . import main
 
 @main.route('/<short_key>')

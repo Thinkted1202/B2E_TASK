@@ -24,6 +24,11 @@ def errorhandler(message):
     response.status_code = 501
     return response
 
+def unconnection(message):
+    response = jsonify({'error': 'unconnection', 'message': message})
+    response.status_code = 502
+    return response
+
 # @api.errorhandler(ValidationError)
 # def validation_error(e):
 #     return bad_request(e.args[0])

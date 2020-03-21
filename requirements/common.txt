@@ -29,3 +29,4 @@ webencodings==0.5.1
 Werkzeug==0.12.2
 WTForms==2.1
 redis==3.4.1
+hashids==1.2.0

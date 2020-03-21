@@ -27,9 +27,12 @@ class ShortUrl(db.Model):
 	def gen_shortKey(url):
 		return base64.b64encode(hashlib.md5(str(url).encode('utf-8')).digest())[0:8]
 
-	#新增短網址到紀錄
-	def add_url(short_key,url):
-		db.session.add(ShortUrl(shortkey=short_key, url=url))
+	#新增到紀錄
+	def save_to_db(self):
+		db.session.add(self)
 		db.session.commit()
+		return self
 
+	def update_to_db(self):
+		db.session.commit()
 
