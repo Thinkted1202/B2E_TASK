@@ -11,10 +11,14 @@ class Config:
 	# DB SLOW QUERY
 	FLASKY_SLOW_DB_QUERY_TIME = 0.5
 	#HTTP DOMAIN
-	HOST = 'p.thinkted.com'
+	HOST = 'python.thinkted.com.tw'
 	#REDIS
-	REDIS_HOST=os.environ.get('REDIS_HOST')
-	REDIS_PORT=os.environ.get('REDIS_PORT')
+	REDIS_CONFIG={
+		'CACHE_TYPE': 'redis',
+		'CACHE_REDIS_HOST':os.environ.get('REDIS_HOST'),
+		'CACHE_REDIS_PORT':os.environ.get('REDIS_PORT'),
+		'CACHE_KEY_PREFIX':'b2e_api'
+	}
 	#與下面的環境區分出不同的子類別
 	@staticmethod
 	def init_app(app):

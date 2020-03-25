@@ -1,9 +1,9 @@
 from . import api
 from ..models.shorturl import ShortUrl
-from ..helpers.redis_helper import RedisHelper
+# from ..helpers.redis_helper import RedisHelper
 from ..helpers.hashids_helper import HashidsHelper
-
-from flask import request,jsonify
+from flask import current_app,request,jsonify
+from flask_caching import Cache
 from .errors import errorhandler
 
 @api.route('/shorturl/', methods=['GET','POST'])
@@ -26,9 +26,10 @@ def shorturl():
 	del hash_obj
 
 	# 先輸入到Redis
-	redis_obj = RedisHelper()
-	redis_obj.set(short_key,url,3600)
-	redis_obj.close()
+	cache = Cache(current_app,config=current_app.config['REDIS_CONFIG'])
+	cache.set(short_key,url)
+	del cache
+	
 	#回寫DB
 	shorturl_obj.shortkey = short_key
 	shorturl_obj.update_to_db()

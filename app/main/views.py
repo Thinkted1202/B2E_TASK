@@ -1,23 +1,19 @@
-from flask import redirect
+from flask import current_app,redirect
+from flask_caching import Cache
 from ..models.shorturl import ShortUrl
-from app.helpers.redis_helper import RedisHelper
 from . import main
 
 @main.route('/<short_key>')
 def redirect_to_url(short_key):
 	#URL From Redis Cache
-	r = RedisHelper()
-	url = r.get(short_key)
-	if url is not None:
-		r.close()
-		return redirect(url)
+    cache = Cache(current_app, config=current_app.config['REDIS_CONFIG'])
+    url = cache.get(short_key)
+    if url is not None:
+        return redirect(url)
 
 	#URL From DB
-	ShortUrlObj = ShortUrl.query.filter_by(shortkey=short_key).first()
-	if ShortUrlObj is None:
-		return "None Url"
-	#Cache 1hr
-	r.set(short_key,ShortUrlObj.url,3600)
-	r.close()
-	return redirect(ShortUrlObj.url)
-
+    ShortUrlObj = ShortUrl.query.filter_by(shortkey=short_key).first()
+    if ShortUrlObj is None:
+        return "None Url"
+    cache.set(short_key, ShortUrlObj.url)
+    #return redirect(ShortUrlObj.url)
